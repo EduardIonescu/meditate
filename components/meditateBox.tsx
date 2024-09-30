@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Select,
   SelectContent,
@@ -72,6 +72,18 @@ function MeditateBox() {
     isFirstTime: true
   });
 
+  const secondsSinceStart = useRef(0);
+
+  const formatClock = (secondsSinceStart: number) => {
+    const minutes = Math.floor(secondsSinceStart / 60);
+    const seconds = secondsSinceStart % 60;
+    const stringMinutes = minutes.toString().padStart(2, '0');
+    const stringSeconds = seconds.toString().padStart(2, '0');
+
+    return stringMinutes + ':' + stringSeconds;
+  };
+  const formattedClock = formatClock(secondsSinceStart.current);
+
   const defaultCounter = {
     action: mode[0]![0],
     timer: mode[0]![1],
@@ -129,6 +141,8 @@ function MeditateBox() {
         return;
       }
 
+      secondsSinceStart.current++;
+
       if (counter.timer === 0) {
         // reset to first action
         if (counter.index >= mode.length - 1) {
@@ -172,6 +186,9 @@ function MeditateBox() {
   return (
     <article className="rounded-xl border-x-[1px] border-b-[1px] border-white/5">
       <article className="relative flex h-56 w-full items-center justify-center rounded-xl border-2 border-white/15 text-xl">
+        <div className="absolute left-1 top-1 rounded-tl-lg bg-white/10 px-3 py-1 text-xs leading-4 opacity-75">
+          {formattedClock}
+        </div>
         {started ? (
           <>
             <div
