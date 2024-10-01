@@ -114,7 +114,7 @@ function MeditateBox() {
           />
 
           <article className="absolute -bottom-6 flex w-3/4 gap-2 rounded-md border border-neutral-800 bg-background bg-gradient-to-r from-neutral-600/20 via-neutral-900/20 to-neutral-900/20 py-1.5 pr-1.5">
-            <div className="absolute -top-[1px] left-[10%] h-0.5 w-3/4 bg-gradient-to-r from-white/5 from-10% via-white/20 via-70% to-white/5" />
+            <div className="absolute -top-[1px] left-[10%] h-0.5 w-3/4 bg-gradient-to-r from-white/5 from-10% via-white/80 via-70% to-white/5 opacity-25" />
 
             <Select onValueChange={handleSelectChange} disabled={started}>
               <SelectTrigger
