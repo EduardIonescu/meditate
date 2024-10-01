@@ -2,7 +2,7 @@ import Image from 'next/image';
 
 function Header() {
   return (
-    <header>
+    <header className="w-app">
       <div className="relative mb-3 h-9 w-9">
         <Image
           src="/icons/meditate-icon.webp"

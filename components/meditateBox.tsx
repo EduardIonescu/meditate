@@ -184,56 +184,60 @@ function MeditateBox() {
   }
 
   return (
-    <article className="rounded-xl border-x-[1px] border-b-[1px] border-white/5">
-      <article className="relative flex h-56 w-full items-center justify-center rounded-xl border-2 border-white/15 text-xl">
-        <div className="absolute left-1 top-1 rounded-tl-lg bg-white/10 px-3 py-1 text-xs leading-4 opacity-75">
-          {formattedClock}
-        </div>
-        {started ? (
-          <>
-            <div
-              style={{
-                transitionProperty: 'transform',
-                transitionTimingFunction: 'linear',
-                transitionDuration: transition.duration + 's'
-              }}
-              className={`${isBorderBig ? 'scale-150' : 'scale-100'} absolute h-24 w-24 rounded-full border-2 border-white`}
-            />
-            <div className="flex items-center justify-center">
-              {dictionary[counter.action]}
-            </div>
-          </>
-        ) : (
-          'Paused'
-        )}
+    <section className="w-app">
+      <article className="rounded-xl border-x-[1px] border-b-[1px] border-white/5">
+        <article className="relative flex h-56 w-full items-center justify-center rounded-xl border-2 border-white/15 text-xl">
+          <div className="absolute left-1 top-1 rounded-tl-lg bg-white/10 px-3 py-1 text-xs leading-4 opacity-75">
+            {formattedClock}
+          </div>
+          {started ? (
+            <>
+              <div
+                style={{
+                  transitionProperty: 'transform',
+                  transitionTimingFunction: 'linear',
+                  transitionDuration: transition.duration + 's'
+                }}
+                className={`${isBorderBig ? 'scale-150' : 'scale-100'} absolute h-24 w-24 rounded-full border-2 border-white`}
+              />
+              <div className="flex items-center justify-center">
+                {dictionary[counter.action]}
+              </div>
+            </>
+          ) : (
+            'Paused'
+          )}
 
-        <article className="absolute -bottom-6 flex w-3/4 gap-2 rounded-md border border-neutral-800 bg-background py-1.5 pr-1.5">
-          <Select onValueChange={handleChange}>
-            <SelectTrigger className="h-8 w-full border-none">
-              <SelectValue placeholder="4-7-8 Breathing" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="4-7-8">4-7-8 Breathing</SelectItem>
-              <SelectItem value="box">Box Breathing</SelectItem>
-              <SelectItem value="diaphragm">Diaphragmatic Breathing</SelectItem>
-              <SelectItem value="pursed-lip">Pursed Lip Breathing</SelectItem>
-              <SelectItem value="resonant">Resonant Breathing</SelectItem>
-            </SelectContent>
-          </Select>
+          <article className="absolute -bottom-6 flex w-3/4 gap-2 rounded-md border border-neutral-800 bg-background py-1.5 pr-1.5">
+            <Select onValueChange={handleChange}>
+              <SelectTrigger className="h-8 w-full border-none">
+                <SelectValue placeholder="4-7-8 Breathing" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="4-7-8">4-7-8 Breathing</SelectItem>
+                <SelectItem value="box">Box Breathing</SelectItem>
+                <SelectItem value="diaphragm">
+                  Diaphragmatic Breathing
+                </SelectItem>
+                <SelectItem value="pursed-lip">Pursed Lip Breathing</SelectItem>
+                <SelectItem value="resonant">Resonant Breathing</SelectItem>
+              </SelectContent>
+            </Select>
 
-          <button
-            onClick={handleStart}
-            className="group rounded-md bg-white/5 px-3 transition-colors duration-200 ease-linear hover:bg-white/15"
-          >
-            <div className="rounded-xs ml-0.5 h-0 w-0 scale-75 border-b-8 border-l-[14px] border-t-8 border-b-transparent border-l-white/50 border-t-transparent transition-colors duration-200 ease-linear group-hover:border-l-white/80" />
-          </button>
+            <button
+              onClick={handleStart}
+              className="group rounded-md bg-white/5 px-3 transition-colors duration-200 ease-linear hover:bg-white/15"
+            >
+              <div className="rounded-xs ml-0.5 h-0 w-0 scale-75 border-b-8 border-l-[14px] border-t-8 border-b-transparent border-l-white/50 border-t-transparent transition-colors duration-200 ease-linear group-hover:border-l-white/80" />
+            </button>
+          </article>
         </article>
+        <p className="mt-6 p-6 text-sm">
+          <strong>{name}:</strong>{' '}
+          <span className="opacity-60">{description}</span>
+        </p>
       </article>
-      <p className="mt-6 p-6 text-sm">
-        <strong>{name}:</strong>{' '}
-        <span className="opacity-60">{description}</span>
-      </p>
-    </article>
+    </section>
   );
 }
 
