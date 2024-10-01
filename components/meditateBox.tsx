@@ -3,6 +3,7 @@
 import { MODES } from '@/utils/constants';
 import { useClock, useCounter, useSelect, useTransition } from '@/utils/hooks';
 import { Actions } from '@/utils/types';
+import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import ActionMessage from './actionMessage';
 import Clock from './clock';
@@ -109,8 +110,10 @@ function MeditateBox() {
           />
 
           <article className="absolute -bottom-6 flex w-3/4 gap-2 rounded-md border border-neutral-800 bg-background py-1.5 pr-1.5">
-            <Select onValueChange={handleSelectChange}>
-              <SelectTrigger className="h-8 w-full border-none">
+            <Select onValueChange={handleSelectChange} disabled={started}>
+              <SelectTrigger
+                className={`h-8 w-full border-none disabled:cursor-default`}
+              >
                 <SelectValue placeholder="4-7-8 Breathing" />
               </SelectTrigger>
               <SelectContent>
@@ -128,7 +131,20 @@ function MeditateBox() {
               onClick={handleStart}
               className="group rounded-md bg-white/5 px-3 transition-colors duration-200 ease-linear hover:bg-white/15"
             >
-              <div className="rounded-xs ml-0.5 h-0 w-0 scale-75 border-b-8 border-l-[14px] border-t-8 border-b-transparent border-l-white/50 border-t-transparent transition-colors duration-200 ease-linear group-hover:border-l-white/80" />
+              {started ? (
+                <div className="relative h-4 w-4">
+                  <Image
+                    src="/icons/retry-icon.svg"
+                    fill
+                    sizes="100%"
+                    alt=""
+                    aria-hidden
+                    className="object-contain invert-[60%] transition-all duration-200 ease-linear group-hover:invert-[85%]"
+                  />
+                </div>
+              ) : (
+                <div className="rounded-xs ml-0.5 h-0 w-0 scale-75 border-b-8 border-l-[14px] border-t-8 border-b-transparent border-l-white/50 border-t-transparent transition-colors duration-200 ease-linear group-hover:border-l-white/80" />
+              )}
             </button>
           </article>
         </article>
