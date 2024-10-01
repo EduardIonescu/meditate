@@ -48,7 +48,9 @@ function MeditateBox() {
 
     // without a timeout it just makes the circle big from the strart
     const timeout = setTimeout(() => {
-      transition.isFirstTime && updateFirstTime(false);
+      if (transition.isFirstTime) {
+        updateFirstTime(false);
+      }
     }, 1);
 
     const interval = setInterval(() => {
@@ -78,7 +80,9 @@ function MeditateBox() {
       }
 
       decrementCounterTimer();
-      transition.isFirstTime && updateFirstTime(false);
+      if (transition.isFirstTime) {
+        updateFirstTime(false);
+      }
     }, 1000);
 
     return () => {
