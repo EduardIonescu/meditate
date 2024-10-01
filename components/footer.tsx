@@ -1,6 +1,6 @@
 function Footer() {
   return (
-    <footer className="w-app mb-24 mt-8 text-sm">
+    <footer className="w-phone sm:w-app mb-24 mt-8 text-sm">
       <div className="mb-5 h-[1px] w-1/3 bg-gradient-to-r from-white/5 from-10% via-white/20 via-70% to-white/5" />
 
       <p>

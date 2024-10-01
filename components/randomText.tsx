@@ -1,6 +1,6 @@
 function RandomText() {
   return (
-    <section className="w-app">
+    <section className="w-phone sm:w-app">
       <article className="mt-8">
         <h2 className="text-2xl">Finding Calm in the Chaos</h2>
         <p className="my-3 text-base opacity-75">

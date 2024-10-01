@@ -90,7 +90,7 @@ function MeditateBox() {
   console.log(counter);
 
   return (
-    <section className="w-app">
+    <section className="w-phone sm:w-app">
       <article className="rounded-xl border-x-[1px] border-b-[1px] border-white/5">
         <article className="relative flex h-56 w-full items-center justify-center rounded-xl border-2 border-white/15 text-xl">
           <Clock formattedClock={formattedClock} />
@@ -109,10 +109,12 @@ function MeditateBox() {
             action={counter.action}
           />
 
-          <article className="absolute -bottom-6 flex w-3/4 gap-2 rounded-md border border-neutral-800 bg-background py-1.5 pr-1.5">
+          <article className="absolute -bottom-6 flex w-3/4 gap-2 rounded-md border border-neutral-800 bg-background bg-gradient-to-r from-neutral-600/20 via-neutral-900/20 to-neutral-900/20 py-1.5 pr-1.5">
+            <div className="absolute -top-[1px] left-[10%] h-0.5 w-3/4 bg-gradient-to-r from-white/5 from-10% via-white/20 via-70% to-white/5" />
+
             <Select onValueChange={handleSelectChange} disabled={started}>
               <SelectTrigger
-                className={`h-8 w-full border-none disabled:cursor-default`}
+                className={`h-8 w-full border-none bg-transparent disabled:cursor-default`}
               >
                 <SelectValue placeholder="4-7-8 Breathing" />
               </SelectTrigger>

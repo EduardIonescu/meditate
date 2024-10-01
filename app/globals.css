@@ -5,6 +5,9 @@
 :root {
   --background: #0a0a0a;
   --foreground: #ededed;
+
+  --circle-color1: #09090b;
+  --circle-color2: #434352;
 }
 
 body {

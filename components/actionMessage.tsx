@@ -24,11 +24,13 @@ function ActionMessage({
         style={{
           transitionProperty: 'transform',
           transitionTimingFunction: 'linear',
-          transitionDuration: transition.duration + 's'
+          transitionDuration: transition.duration + 's',
+          backgroundImage:
+            'radial-gradient(var(--circle-color1), var(--circle-color1), var(--circle-color2))'
         }}
-        className={`${isBorderBig ? 'scale-150' : 'scale-100'} absolute h-24 w-24 rounded-full border-2 border-white`}
+        className={`${isBorderBig ? 'scale-150' : 'scale-100'} absolute h-24 w-24 rounded-full border-2 border-white/5`}
       />
-      <div className="flex items-center justify-center">
+      <div className="z-10 flex items-center justify-center">
         {BreathingDictionary[action]}
       </div>
     </>

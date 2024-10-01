@@ -10,7 +10,8 @@ const config: Config = {
   theme: {
     extend: {
       width: {
-        app: '450px'
+        app: '450px',
+        phone: '320px'
       },
       colors: {
         background: 'var(--background)',
