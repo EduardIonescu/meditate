@@ -40,3 +40,8 @@ export const BreathingDictionary: Readonly<UserActionsMap> = Object.freeze({
   exhale: 'Exhale',
   hold_exhale: 'Hold'
 });
+
+/** Max width in pixels */
+export const MAX_WIDTH_PROGRESS_BAR = 80;
+/** 60 FPS */
+export const FRAME_INTERVAL = 16.6;

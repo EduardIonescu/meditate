@@ -6,6 +6,7 @@ import { Actions } from '@/utils/types';
 import { useEffect, useState } from 'react';
 import ActionMessage from './actionMessage';
 import Clock from './clock';
+import ProgressBar from './progressBar';
 import {
   Select,
   SelectContent,
@@ -91,6 +92,13 @@ function MeditateBox() {
       <article className="rounded-xl border-x-[1px] border-b-[1px] border-white/5">
         <article className="relative flex h-56 w-full items-center justify-center rounded-xl border-2 border-white/15 text-xl">
           <Clock formattedClock={formattedClock} />
+
+          {started && (
+            <ProgressBar
+              duration={actionsMap[counter.action]!}
+              durationLeft={counter.timer}
+            />
+          )}
 
           <ActionMessage
             started={started}
