@@ -62,6 +62,7 @@ function MeditateBox() {
         // reset to first action
         if (counter.index >= mode.length - 1) {
           setCounter(defaultCounter);
+          updateTransitionDuration(defaultCounter.timer);
 
           return;
         }
