@@ -23,7 +23,7 @@ function ProgressBar({ duration, durationLeft }: ProgressBarProps) {
     }, FRAME_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [duration]);
+  }, [duration, durationLeft]);
 
   return (
     <div className="absolute top-2 mx-auto h-0.5 w-20 rounded-full bg-white/15">
