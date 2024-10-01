@@ -1,6 +1,11 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { MODES } from '@/utils/constants';
+import { useClock, useCounter, useSelect, useTransition } from '@/utils/hooks';
+import { Actions } from '@/utils/types';
+import { useEffect, useState } from 'react';
+import ActionMessage from './actionMessage';
+import Clock from './clock';
 import {
   Select,
   SelectContent,
@@ -9,100 +14,22 @@ import {
   SelectValue
 } from './ui/select';
 
-type BreathingType = '4-7-8' | 'box' | 'diaphragm' | 'pursed-lip' | 'resonant';
-type Actions = 'inhale' | 'hold_inhale' | 'exhale' | 'hold_exhale';
-type ActionsMap = { [action in Actions]?: number };
-type BreathingData = {
-  name: string;
-  description: string;
-  actionsMap: ActionsMap;
-};
-
-type UserActions = 'Inhale' | 'Hold' | 'Exhale';
-type UserActionsMap = { [action in Actions]?: UserActions };
-
-const modes: { [mode in BreathingType]: BreathingData } = {
-  '4-7-8': {
-    name: '4-7-8 Breathing',
-    description:
-      'Inhale for 4 seconds, hold the breath for 7 seconds and exhale for 8 seconds. This technique helps reduce stress and promote relaxation.',
-    actionsMap: { inhale: 4, hold_inhale: 7, exhale: 8 }
-  },
-  box: {
-    name: 'Box Breathing',
-    description:
-      'Inhale for 4 seconds, hold for 4 seconds, exhale for 4 seconds and hold again for 4 seconds. It enhances focus and effectively calms the busy mind.',
-    actionsMap: { inhale: 4, hold_inhale: 4, exhale: 4, hold_exhale: 4 }
-  },
-  diaphragm: {
-    name: 'Diaphragmatic Breathing',
-    description:
-      'Inhale deeply, expanding the diaphragm, for 4 seconds and exhale for 6 seconds. This exercise improves lung efficiency and reduces stress.',
-    actionsMap: { inhale: 4, exhale: 6 }
-  },
-  'pursed-lip': {
-    name: 'Pursed Lip Breathing',
-    description:
-      'Inhale through the nose for 2 seconds, exhale slowly through pursed lips for 4 seconds. It helps slow down breathing and promotes relaxation.',
-    actionsMap: { inhale: 2, exhale: 4 }
-  },
-  resonant: {
-    name: 'Resonant Breathing',
-    description:
-      'Breathe in and out evenly, usually around 6 breaths per minute. This method balances the nervous system and improves emotional well-being.',
-    actionsMap: { inhale: 5, exhale: 5 }
-  }
-};
-
-const dictionary: UserActionsMap = {
-  inhale: 'Inhale',
-  hold_inhale: 'Hold',
-  exhale: 'Exhale',
-  hold_exhale: 'Hold'
-};
-
 function MeditateBox() {
   const [started, setStarted] = useState(false);
-  const [select, setSelect] = useState<BreathingType>('4-7-8');
-  const { name, description, actionsMap } = modes[select];
+  const { select, handleSelectChange } = useSelect('4-7-8');
+  const { name, description, actionsMap } = MODES[select];
   const mode = Object.entries(actionsMap) as [Actions, number][];
   console.log(mode);
-  const [transition, setTransition] = useState({
-    duration: mode[0]![1],
-    isFirstTime: true
-  });
 
-  const secondsSinceStart = useRef(0);
+  const { formattedClock, incrementClock } = useClock();
 
-  const formatClock = (secondsSinceStart: number) => {
-    const minutes = Math.floor(secondsSinceStart / 60);
-    const seconds = secondsSinceStart % 60;
-    const stringMinutes = minutes.toString().padStart(2, '0');
-    const stringSeconds = seconds.toString().padStart(2, '0');
+  const defaultCounter = { action: mode[0]![0], timer: mode[0]![1], index: 0 };
+  const { counter, setCounter, decrementCounterTimer } =
+    useCounter(defaultCounter);
 
-    return stringMinutes + ':' + stringSeconds;
-  };
-  const formattedClock = formatClock(secondsSinceStart.current);
-
-  const defaultCounter = {
-    action: mode[0]![0],
-    timer: mode[0]![1],
-    index: 0
-  };
-
-  const [counter, setCounter] = useState(defaultCounter);
-
-  const updateTransitionDuration = (duration: number) => {
-    setTransition((prev) => ({ ...prev, duration }));
-  };
-
-  const updateFirstTime = (bool: boolean) => {
-    setTransition((prev) => ({ ...prev, isFirstTime: bool }));
-  };
-
-  const decrementCounterTimer = () => {
-    setCounter((prev) => ({ ...prev, timer: prev.timer - 1 }));
-  };
+  const defaultTransition = { duration: mode[0]![1], isFirstTime: true };
+  const { transition, updateTransitionDuration, updateFirstTime, isBorderBig } =
+    useTransition(defaultTransition, started, counter.action);
 
   const handleStart = () => {
     if (started === true) {
@@ -110,19 +37,6 @@ function MeditateBox() {
       updateFirstTime(true);
     }
     setStarted((prev) => !prev);
-  };
-
-  const handleChange = (value: string) => {
-    if (
-      value !== '4-7-8' &&
-      value !== 'box' &&
-      value !== 'diaphragm' &&
-      value !== 'pursed-lip' &&
-      value !== 'resonant'
-    ) {
-      return;
-    }
-    setSelect(value);
   };
 
   useEffect(() => {
@@ -141,13 +55,13 @@ function MeditateBox() {
         return;
       }
 
-      secondsSinceStart.current++;
+      incrementClock();
 
-      if (counter.timer === 0) {
+      if (counter.timer === 1) {
         // reset to first action
         if (counter.index >= mode.length - 1) {
           setCounter(defaultCounter);
-          updateTransitionDuration(defaultCounter.timer);
+
           return;
         }
 
@@ -172,44 +86,21 @@ function MeditateBox() {
 
   console.log(counter);
 
-  let isBorderBig = false;
-  const shouldBorderBeBig =
-    started &&
-    (counter.action === 'inhale' || counter.action === 'hold_inhale');
-
-  if (shouldBorderBeBig && !transition.isFirstTime) {
-    isBorderBig = true;
-  } else {
-    isBorderBig = false;
-  }
-
   return (
     <section className="w-app">
       <article className="rounded-xl border-x-[1px] border-b-[1px] border-white/5">
         <article className="relative flex h-56 w-full items-center justify-center rounded-xl border-2 border-white/15 text-xl">
-          <div className="absolute left-1 top-1 rounded-tl-lg bg-white/10 px-3 py-1 text-xs leading-4 opacity-75">
-            {formattedClock}
-          </div>
-          {started ? (
-            <>
-              <div
-                style={{
-                  transitionProperty: 'transform',
-                  transitionTimingFunction: 'linear',
-                  transitionDuration: transition.duration + 's'
-                }}
-                className={`${isBorderBig ? 'scale-150' : 'scale-100'} absolute h-24 w-24 rounded-full border-2 border-white`}
-              />
-              <div className="flex items-center justify-center">
-                {dictionary[counter.action]}
-              </div>
-            </>
-          ) : (
-            'Paused'
-          )}
+          <Clock formattedClock={formattedClock} />
+
+          <ActionMessage
+            started={started}
+            transition={transition}
+            isBorderBig={isBorderBig}
+            action={counter.action}
+          />
 
           <article className="absolute -bottom-6 flex w-3/4 gap-2 rounded-md border border-neutral-800 bg-background py-1.5 pr-1.5">
-            <Select onValueChange={handleChange}>
+            <Select onValueChange={handleSelectChange}>
               <SelectTrigger className="h-8 w-full border-none">
                 <SelectValue placeholder="4-7-8 Breathing" />
               </SelectTrigger>
