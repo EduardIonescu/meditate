@@ -21,7 +21,6 @@ function MeditateBox() {
   const { select, handleSelectChange } = useSelect('4-7-8');
   const { name, description, actionsMap } = MODES[select];
   const mode = Object.entries(actionsMap) as [Actions, number][];
-  console.log(mode);
 
   const { formattedClock, incrementClock } = useClock();
 
@@ -90,8 +89,6 @@ function MeditateBox() {
       clearInterval(interval);
     };
   }, [started, counter.timer]);
-
-  console.log(counter);
 
   return (
     <section className="w-phone sm:w-app">
